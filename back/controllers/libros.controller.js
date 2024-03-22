@@ -9,9 +9,9 @@ const responseAPI = {
 
 export const getAllLibros = async (req, res) => {
 
-    const consulta=`SELECT * FROM libros
-                    LEFT JOIN autores ON (libros.id_autor = autores.id)
-                    WHERE libros.deleted_at IS NULL`;
+    const consulta=`SELECT l.*, a.nombre FROM libros l
+                    LEFT JOIN autores a ON (l.id_autor = a.id)
+                    WHERE l.deleted_at IS NULL`;
 
     const [results, fields ] = await mysqlConn.query(consulta);
 

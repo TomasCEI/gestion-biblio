@@ -1,13 +1,9 @@
 
 
 import {useState, useEffect} from 'react';
-
 import { useContext } from "react";
 import {AuthContext} from "@/pages/Layout";
-
-
 import { useNavigate } from 'react-router-dom'; // redirige a donde querramos
-//import { easyFetch } from '../../helpers/utils';
 import { easyFetch } from '@/helpers/utils';
 
 
@@ -17,7 +13,7 @@ const {VITE_NAME, VITE_MODE, VITE_BACKEND_URL} = import.meta.env;
 
 function LoginForm() {
 
-    const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
+    const {isLoggedIn, setIsLoggedIn, userData, setUserData} = useContext(AuthContext);
 
 
     //const [formData, setFormData] = useState();
@@ -61,11 +57,12 @@ function LoginForm() {
         easyFetch({
             url: `${VITE_BACKEND_URL}/auth/login`,
             method: 'POST', 
-            body: JSON.stringify({user: user, pass: pass}),
+            body: {user: user, pass: pass},
             callback: (data) => {
                 console.log("EXITO loggedin!!! " , data);
 
-                if(data.success) {
+                if(data.status=="ok") {
+                    setUserData(data.data[0]); // guardo los datos del usuario en el contexto
                     setIsLoggedIn(true);
                     navegador("/lista");
                 } else {
@@ -93,7 +90,6 @@ function LoginForm() {
             
             <label htmlFor="user">Usuario</label>
             <input type="text" id="user" name="user"
-            
                 value={user}
                 placeholder="Ingrese su usuario"
                 //onChange={handleInputChange}
@@ -102,7 +98,6 @@ function LoginForm() {
 
             <label htmlFor="pass">Clave</label>
             <input type="password" id="pass" name="pass"
-            
                 value={pass}
                 placeholder="Ingrese su clave"
                 //onChange={handleInputChange}

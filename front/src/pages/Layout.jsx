@@ -15,6 +15,8 @@ function Layout(){
     const [theme, setTheme] = useState('light');
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userData, setUserData] = useState({}); // los datos de mi usuario (nombre, email, imagen, etc.)
+
     console.log("isLoggedIn", isLoggedIn);
     // use useContext to set if its logged in or not
     //const {isLoggedIn} = useContext(AuthContext);  
@@ -22,7 +24,7 @@ function Layout(){
     return (
       <>
       <ThemeContext.Provider value={{ theme, setTheme }}>
-        <AuthContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
+        <AuthContext.Provider value={{isLoggedIn, setIsLoggedIn, userData, setUserData}}>
 
           <Navigation />
           <div className="content">

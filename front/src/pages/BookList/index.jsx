@@ -1,14 +1,21 @@
-import {useState, useEffect} from 'react';
-import BookForm from '../../components/BookForm';
-import { easyFetch } from '../../helpers/utils';
+import { useState, useEffect, useContext } from 'react';
+import BookForm from '@/components/BookForm';
+import { easyFetch } from '@/helpers/utils';
 import { useNavigate } from 'react-router-dom'; // redirige a donde querramos
+import { AuthContext } from '@/pages/Layout';
 
 
 function BookList() {
   const [bookList, setBookList] = useState([]);
   const [editarLibro, setEditarLibro] = useState(null);
 
-const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
+  const {isLoggedIn, setIsLoggedIn} = useContext(AuthContext);
+  
+  const navegator=useNavigate();
+
+  if(!isLoggedIn){
+    navegator("/login");
+  }
 
   useEffect( ()=> {
     fetchLibros();
@@ -16,11 +23,7 @@ const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
 
   const fetchLibros = async () => {
 
-    const navegator=useNavigate();
 
-    if(!isLoggedIn){
-      navegator("./login");
-    }
     /*
     try {
       const url="http://localhost:3000/API/v1/libros";

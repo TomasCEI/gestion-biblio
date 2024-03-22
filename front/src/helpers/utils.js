@@ -20,15 +20,15 @@ easyFetch({
  * - incluye señal de Abort incluida de máximo 5 segundos
  * 
  * @author "Tomás Sanchez Gavier"
- * @param {Object}          fetchOptions                - Opciones de nuestra solicitud fetch
+ * @param {Object}          fetchOptions                 - Opciones de nuestra solicitud fetch
  * 
- * @param {string}          fetchOptions.url            - La url a la que se realizará la petición. 
- * @param {string}          [fetchOptions.metodo="GET"] - El método HTTP de nuestra solicitud (GET, POST, PUT, DELETE, etc) 
- * @param {object|null}     [fetchOptions.body=null]    - El cuerpo de la petición que convertiremos a JSON
- * @param {number}          [fetchOptions.timeout=5000] - Tiempo de espera máximo en milisegundos antes de abortar la petición
- * @param {function|null}   fetchOptions.callback       - Función que se ejecuta luego de recibir los datos.
+ * @param {string}          fetchOptions.url             - La url a la que se realizará la petición. 
+ * @param {string}          [fetchOptions.metodo="GET"]  - El método HTTP de nuestra solicitud (GET, POST, PUT, DELETE, etc) 
+ * @param {object|null}     [fetchOptions.body=null]     - El cuerpo de la petición que convertiremos a JSON
+ * @param {number}          [fetchOptions.timeout=5000]  - Tiempo de espera máximo en milisegundos antes de abortar la petición
+ * @param {function|null}   [fetchOptions.callback=null] - Función que se ejecuta luego de recibir los datos.
  * 
- * @returns {Promise|void}                              - Devuelve una promesa que resuelve los datos de la respuesta si no se proporciona una función de callback.
+ * @returns {Promise|void}                               - Devuelve una promesa que resuelve los datos de la respuesta si no se proporciona una función de callback.
  */
 export const easyFetch = async ({
     url, method="GET", body =null, timeout=5000, callback=null
@@ -62,7 +62,9 @@ export const easyFetch = async ({
         }
 
     } catch (error) {
-        console.error("Error al realizar el request: ", error.message);
+        //console.error("Error al realizar el request: ", error.message);
+        // Lanza el error nuevamente para que el código que llama a easyFetch pueda manejarlo.
+        throw new Error("Error al realizar el request: " + error.message);
     }
 }
 
