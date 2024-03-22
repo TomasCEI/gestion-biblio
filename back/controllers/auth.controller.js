@@ -100,4 +100,33 @@ export const registerUser = async(req, res) => {
     res.status(200).send(responseAPI);
 }
 
+export const editUserProfile = async(req, res) => {
+
+    // get data from formData
+    //const { name, email, password, image } = req.body;
+
+    console.log("Req file es: ", req.file);
+    console.log("Req body es: ", req.body);
+
+      // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+
+    responseAPI.msg="Perfil editado correctamente";
+    res.status(200).send(responseAPI);
+
+
+
+
+    // upload image to profile
+
+
+    // update password
+
+    // update email
+
+    // update name
+
+    
+}
+
 

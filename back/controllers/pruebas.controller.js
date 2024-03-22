@@ -9,7 +9,7 @@ const responseAPI = {
 }
 
 export const testHash = (req, res) => {
-    responseAPI.data=[];
+    //responseAPI.data=[];
     const start= Date.now();
     
     let password="1234";
@@ -36,5 +36,5 @@ export const testHash = (req, res) => {
     responseAPI.msg="Testing Hash Script";
     responseAPI.status="error";
     res.status(400).send(responseAPI);
-    return;
+    //return; // no hace falta ya que .send() termina la ejecución de la función
 }

@@ -4,6 +4,8 @@ import { easyFetch } from '../helpers/utils';
 
 const BookForm = ({libro, setEditarLibro})=>{
 
+    const [autoresList, setAutoresList] = useState([]);
+
     const [formData, setFormData] = useState(libro);
     const {titulo, autor, categoria, id} = formData;
 
@@ -23,6 +25,18 @@ const BookForm = ({libro, setEditarLibro})=>{
     }, [formData])
     */
 
+    useEffect( ()=> {
+        fetchAutores();
+      }, []);
+    
+      const fetchAutores = async () => {
+        easyFetch({
+          url: "http://localhost:3000/API/v1/autores",
+          callback: (jsonData) => {
+            setAutoresList(jsonData.data);
+          }
+        })
+      }
 
     const handleCreateBook = async () => {
         easyFetch({
@@ -85,14 +99,23 @@ const BookForm = ({libro, setEditarLibro})=>{
             /><br />
 
             <label>Autor del libro</label>
-            <input 
+            <select name="autor" onChange={handleInputChange}>
+                {
+                    autoresList.map( autor => (
+                        <option key={autor.id} value={autor.id}>{autor.nombre}</option>
+                    ))
+                }
+
+            </select>
+            {/* <input 
                 type="text"
                 className="input-control"
                 name="autor"
                 value={autor}
                 placeholder="Ingrese el autor del Libro"
                 onChange={handleInputChange}
-            /><br />
+            /> */}
+            <br />
 
             <label>Categoría</label>
             <input 

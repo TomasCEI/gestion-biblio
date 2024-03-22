@@ -60,7 +60,7 @@ function BookList() {
           bookList.map( libro => ( 
             <div className="card" key={libro.id}>
               <h3>{libro.titulo}</h3>
-              <strong>Autor:</strong> {libro.autor}
+              <strong>Autor:</strong> {libro.nombre}
               <strong>Categoría:</strong> {libro.categoria}
               <button onClick={()=>handleEditarLibro(libro)}>Editar</button>
             </div>

@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import indexRoutes from './routes/index.routes.js';
 import cors from 'cors'; // uso de cors mediante libreria externa
 
+
 const app = express();
 console.clear();
 

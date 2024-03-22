@@ -22,11 +22,7 @@ export const getAllLibros = async (req, res) => {
 }
 
 export const createLibro = async(req, res) => {
-    // ejemplo sequelize
-    //delete req.body.id; // quito el id=0; que envío desde el front
-    //const newBook = await Libros.create(req.body)
 
-    // ejemplo MySQL
     const {titulo, id_autor, cali=0, lanzamiento="", editorial="", precio=0, cant_vendidos=0, num_paginas=0 } = req.body;
 
     if(titulo=="" || id_autor == 0){
@@ -56,7 +52,7 @@ export const createLibro = async(req, res) => {
 
 export const getLibroById = async(req, res) => {
 
-    const Libro = await Libros.findByPk(req.params.id);
+    //const Libro = await Libros.findByPk(req.params.id);
     if(!Libro){
         responseAPI.msg="Libro no encontrado";
         responseAPI.status="ok";
@@ -72,7 +68,7 @@ export const getLibroById = async(req, res) => {
 }
 
 export const updateLibro = async(req, res) => {
-    const Libro = await Libros.findByPk(req.params.id);
+    //const Libro = await Libros.findByPk(req.params.id);
     if(!Libro){
         responseAPI.msg="Libro no encontrado";
         responseAPI.status="ok";
@@ -89,7 +85,7 @@ export const updateLibro = async(req, res) => {
 }
 
 export const deleteLibro = async(req, res) => {
-    const Libro = await Libros.findByPk(req.params.id);
+    //const Libro = await Libros.findByPk(req.params.id);
     if(!Libro){ // No se encontró 
         responseAPI.msg="No se encontró un libro para eliminar";
         res.status(404).send(responseAPI); return;
