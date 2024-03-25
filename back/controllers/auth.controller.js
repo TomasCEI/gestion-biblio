@@ -9,15 +9,15 @@ const responseAPI = {
 }
 
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
 
-    //console.log("Req body es: ", req.body);
-
-    // obtenemos los datos del request
-    const { user, pass } = req.body;
-
-    // buscamos el usuario con ese user
     try {
+        //console.log("Req body es: ", req.body);
+
+        // obtenemos los datos del request
+        const { user, pass } = req.body;
+
+        // buscamos el usuario con ese user
         const consulta= "SELECT * FROM `usuarios` WHERE `user`= ? AND `deleted_at` IS NULL";
         const params = [user, pass];
         const [results, fields ] = await mysqlConn.query(consulta, user);
@@ -54,68 +54,74 @@ export const loginUser = async (req, res) => {
         responseAPI.status="ok";
         res.status(200).send(responseAPI);
         
-
-    } catch (error) {
-        console.log("Error en la consulta", error);
+    } catch (error){
+        next(error);
     }
-
 
 }
 
-export const registerUser = async(req, res) => {
+export const registerUser = async(req, res, next) => {
 
-    // ejemplo MySQL
-    const {user, pass } = req.body;
+    try {
+        // ejemplo MySQL
+        const {user, pass } = req.body;
 
-    if(user=="" || pass == ""){
-        responseAPI.msg="Error al registrar usuario";
-        responseAPI.status="error";
-        res.status(400).send(responseAPI);
-        return;
+        if(user=="" || pass == ""){
+            responseAPI.msg="Error al registrar usuario";
+            responseAPI.status="error";
+            res.status(400).send(responseAPI);
+            return;
+        }
+
+        //const now = new Date(); // FECHA ACTUAL!
+        const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        // convierte mi clave...
+        const encryptedPassword = bcrypt.hashSync(pass, 10);
+        console.log(encryptedPassword);
+        
+        const sqlQuery= `INSERT INTO usuarios (user, password, updated_at, created_at) 
+                            VALUES ('${user}', '${encryptedPassword}', '${now}', '${now}');`;
+        const [result, fields ] = await mysqlConn.query(sqlQuery);
+
+        const lastId = result.insertId; // ultimo id insertado
+
+        const [newUser, newUserFields] = await mysqlConn.query('SELECT * FROM usuarios WHERE id = ?', [lastId] );
+
+        // eliminar ciertos elementos sensibles, antes de enviar al usuario
+        delete newUser[0].password; // no devolvemos la clave encritada
+
+
+        // Nuestra respuesta para MySQL o Sequelize
+        responseAPI.data=newUser;
+        responseAPI.msg="Usuario registrado correctamente!";
+        responseAPI.status="ok";
+        res.status(200).send(responseAPI);
+    } catch (error){
+        next(error);
     }
-
-    //const now = new Date(); // FECHA ACTUAL!
-    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-    // convierte mi clave...
-    const encryptedPassword = bcrypt.hashSync(pass, 10);
-    console.log(encryptedPassword);
-    
-    const sqlQuery= `INSERT INTO usuarios (user, password, updated_at, created_at) 
-                        VALUES ('${user}', '${encryptedPassword}', '${now}', '${now}');`;
-    const [result, fields ] = await mysqlConn.query(sqlQuery);
-
-    const lastId = result.insertId; // ultimo id insertado
-
-    const [newUser, newUserFields] = await mysqlConn.query('SELECT * FROM usuarios WHERE id = ?', [lastId] );
-
-    // eliminar ciertos elementos sensibles, antes de enviar al usuario
-    delete newUser[0].password; // no devolvemos la clave encritada
-
-
-    // Nuestra respuesta para MySQL o Sequelize
-    responseAPI.data=newUser;
-    responseAPI.msg="Usuario registrado correctamente!";
-    responseAPI.status="ok";
-    res.status(200).send(responseAPI);
 }
 
-export const editUserProfile = async(req, res) => {
+export const editUserProfile = async(req, res, next) => {
 
-    // get data from formData
-    //const { name, email, password, image } = req.body;
+    try {
+        // get data from formData
+        //const { name, email, password, image } = req.body;
 
-    console.log("Req file es: ", req.file); // los datos de mi archivo recien subido
-    console.log("Req body es: ", req.body); // title
-
-
-    // almacenar en la Base de datos, los datos de mi archivo
+        console.log("Req file es: ", req.file); // los datos de mi archivo recien subido
+        console.log("Req body es: ", req.body); // title
 
 
-    responseAPI.msg="Perfil editado correctamente";
-    res.status(200).send(responseAPI);
+        // almacenar en la Base de datos, los datos de mi archivo
 
 
+        responseAPI.msg="Perfil editado correctamente";
+        res.status(200).send(responseAPI);
+
+
+    } catch (error){
+        next(error);
+    }
     
 }
 

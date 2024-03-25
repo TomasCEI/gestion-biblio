@@ -7,18 +7,50 @@ const responseAPI = {
     status: "ok"
 }
 
-export const getAllAutores = async (req, res) => {
+export const getAllAutores = async (req, res, next) => {
 
-    const consulta=`SELECT * FROM autores`;
+    try {
+        const consulta=`SELECT * FROM autores`;
 
-    const [results, fields ] = await mysqlConn.query(consulta);
+        const [results, fields ] = await mysqlConn.query(consulta);
 
-    responseAPI.data=results;
-    responseAPI.msg="Obtener autores";
-    responseAPI.status="ok";
-    res.status(200).send(responseAPI);
+        responseAPI.data=results;
+        responseAPI.msg="Obtener autores";
+        responseAPI.status="ok";
+        res.status(200).send(responseAPI);
+    } catch (error){
+        next(error);
+    }
 }
+export const createAutor = async(req, res, next) => {
 
+    try {
+        //responseAPI.data=results;
+        responseAPI.msg="Autor creado con éxito!";
+        responseAPI.status="ok";
+        res.status(201).send(responseAPI);
+    } catch (error){
+        next(error);
+    }
+}
+export const getAutorById = async (req, res, next) => {
+    try {
 
-export const createAutor = async(req, res) => {
+    }catch (error) {
+        next(error);
+    }
+}
+export const updateAutor = async (req, res, next) => {
+    try {
+
+    }catch (error) {
+        next(error);
+    }
+}
+export const deleteAutor = async (req, res, next) => {
+    try {
+
+    }catch (error) {
+        next(error);
+    }
 }

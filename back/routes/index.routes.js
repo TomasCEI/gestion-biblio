@@ -6,11 +6,12 @@ import multer from 'multer'; // MiddleWare para subir archivos
 import {loginUser, registerUser, editUserProfile} from '../controllers/auth.controller.js';
 
 import {getAllLibros, createLibro, getLibroById, updateLibro, deleteLibro} from '../controllers/libros.controller.js';
-import {getAllAutores} from '../controllers/autores.controller.js';
+import {getAllAutores, createAutor, getAutorById, updateAutor, deleteAutor} from '../controllers/autores.controller.js';
 import {getAllUsers, getUserById, updateUser, deleteUser} from '../controllers/users.controller.js';
 import {seedUsers, seedLibros, seedAutores, seedAll, emptyTables } from '../controllers/seed.controller.js';
 
 import {testHash} from '../controllers/pruebas.controller.js';
+
 
 // Upload utilizando el middleware de Multer
 //import {upload} from '../middlewares/multerStorage.js';
@@ -37,7 +38,7 @@ const storage = multer.diskStorage({
       }
   })
   
-  const upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
 
 // // Configuración de multer para subir archivos
@@ -100,10 +101,10 @@ router.delete(  "/libros/:id",  deleteLibro);   // delete
 // Autores
 // CRUD: Create Read Update Delete
 router.get(     "/autores",      getAllAutores);
-// router.post(    "/autores",      createAutor);   // create
-// router.get(     "/autores/:id",  getAutorById);  // read
-// router.put(     "/autores/:id",  updateAutor);   // update
-// router.delete(  "/autores/:id",  deleteAutor);   // delete
+router.post(    "/autores",      createAutor);   // create
+router.get(     "/autores/:id",  getAutorById);  // read
+router.put(     "/autores/:id",  updateAutor);   // update
+router.delete(  "/autores/:id",  deleteAutor);   // delete
 
 
 // Cambiar a put("/users/:id") para que sea más RESTful
@@ -127,5 +128,8 @@ router.get('/error1', (req, res, next) => {
 router.get('/error2', (req, res, next) => {
     next(new Error('Algo salió mal 2!'));
 });
+
+
+
 
 export default router;

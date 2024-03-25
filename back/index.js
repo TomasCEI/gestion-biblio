@@ -16,6 +16,8 @@ app.use(setHeaders);
 app.use(express.json()); // procesa el json body para leer con req.body()
 app.use(express.urlencoded({extended:false})); // leer datos de urlEncoded de req.body()
 app.use(logger);
+// Nos permite acceder a los archivos de nuestro backend
+app.use('/uploads', express.static('uploads'));
 
 // app.use((req, res, next) => {
 //     console.log("Middleware de inicio");
@@ -34,9 +36,17 @@ app.get("/", (req, res)=> {
     res.send(landingHTML);
 })
 
+// Rutas de la API (v1)
 app.use("/API/v1/", indexRoutes);
 
-// Middleware de errores
+
+// Hace un catch de cualquier otra ruta no definida
+app.all("*", (req, res, next) => {
+    next({status:404, message: "Endpoint no encontrado"});
+    //res.status(404).send("Ruta no encontrada");
+});
+
+// Último Middleware mi APP, es el de Error.
 app.use(errorHandler);
 
 // Alta de Servidor
