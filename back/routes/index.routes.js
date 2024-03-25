@@ -89,6 +89,7 @@ router.delete(  "/users/:id",        deleteUser);   // borrar
 router.get(     "/libros",      getAllLibros);
 router.post(    "/libros",      createLibro);   // create
 router.get(     "/libros/:id",  getLibroById);  // read
+//router.get(     "/libros/autor/:id",  getLibroByIdAutor;  // read
 router.put(     "/libros/:id",  updateLibro);   // update
 router.delete(  "/libros/:id",  deleteLibro);   // delete
 
@@ -105,6 +106,7 @@ router.post(    "/autores",      createAutor);   // create
 router.get(     "/autores/:id",  getAutorById);  // read
 router.put(     "/autores/:id",  updateAutor);   // update
 router.delete(  "/autores/:id",  deleteAutor);   // delete
+// router.get(   "/autores/:id/libros",  getLibrosByAutor);  // read
 
 
 // Cambiar a put("/users/:id") para que sea más RESTful
